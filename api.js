@@ -1,10 +1,21 @@
 const express = require('express');
 const fs = require('fs');
+const path = require('path');
+const dataFilePath = path.join(__dirname, 'data.json');
+const cors = require('cors'); // Add this line
 
 const app = express();
 app.use(express.json());
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
-const dataFilePath = 'data.json';
+
+
+//const dataFilePath = 'data.json';
 
 // Helper function to read data from the JSON file
 function readDataFromFile() {
@@ -79,6 +90,7 @@ app.delete('/entries/:serial', (req, res) => {
 
 // Start the server
 app.listen(3000, () => {
+console.log('Current working directory:', process.cwd());
   console.log('API server listening on port 3000');
-});
 
+});
